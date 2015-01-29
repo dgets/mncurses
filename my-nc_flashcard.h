@@ -142,11 +142,15 @@ int center_shit(char chunk[] /*, WINDOW *curscr */) {
   }
 
   cntr = ypos_for_center(maxy, lines);
-  while (cntr > -1) {
-	if (xpos_for_center(maxx, (int) strlen(chunk)) < 0)
-		mvaddstr(cntr--, 4, "Oopthsie");
-	else
-		mvaddstr(
+  for (char curLine = 0; curLine <= lines; curLine++) {
+	if (xpos_for_center(maxx, (int) strlen(chunk)) < 0) {
+		mvaddstr(cntr, 4, "WtF-f-f");
+		return -1;
+	}
+
+	mvaddstr((cntr + curLine),
+		 xpos_for_center(maxx, (int) strlen(chunk[curLine]),
+		 chunk[curLine]);
   }
 
   refresh();
