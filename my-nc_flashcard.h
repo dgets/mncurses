@@ -121,6 +121,7 @@ int xpos_for_center(int mx, int col) {
 
 int center_shit(char chunk[] /*, WINDOW *curscr */) {
   int	maxx, maxy, ouah, cntr, lines = 0;
+  char	curLine;
   bool	flag;
 
   clear();
@@ -142,7 +143,7 @@ int center_shit(char chunk[] /*, WINDOW *curscr */) {
   }
 
   cntr = ypos_for_center(maxy, lines);
-  for (char curLine = 0; curLine <= lines; curLine++) {
+  for (curLine = 0; curLine <= lines; curLine++) {
 	if (xpos_for_center(maxx, (int) strlen(chunk)) < 0) {
 		mvaddstr(cntr, 4, "WtF-f-f");
 		return -1;
@@ -169,17 +170,23 @@ int pause_flow(pauseType pT, char *prompt) {
 
 	int maxx, maxy;
 
-	if (pT == HALF) 
+	if (prompt == NULL) {
+		prompt = "";
+	}
+
+	if (pT == HALF) {
 		(void) halfdelay(250);
-	else /* (pT == FULL) */
-		(void) cbreak();
+	} else { //(pT == FULL) 
+		cbreak();
+	}
 
 	getmaxyx(stdscr, maxy, maxx);
 
-	mvaddstr(maxy - 2, xpos_for_center(maxx, (int) strlen(prompt)),
+	mvaddstr((maxy - 2), 
+		 xpos_for_center(maxx, (int) strlen(prompt)),
 		 prompt);
 	refresh();
 
-	return getch();
+	return (char) getch();
 }
 
