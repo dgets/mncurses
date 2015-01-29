@@ -15,4 +15,21 @@
 
 #include "my-nc_flashcard.h"
 
+void *mainWinder;
+char testMsg[78][3] = { "We come for your daughter,", 
+			"Chuck.  Nuh uh uh!  Nobody",
+			"says the B word!" };
+
+if (!init_ncurses(mainWinder)) {
+  printf("\nHouston, we have a bad friggin' problem\n");
+  exit(1);
+}
+
+if (center_shit(testMsg) != 0) {
+  printf("\nHouston, we've had a problem at number 2. :|\n");
+  exit(2);
+} else {
+  exit(0);
+}
+
 
