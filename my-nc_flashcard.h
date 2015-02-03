@@ -45,6 +45,10 @@ bool init_ncurses(WINDOW *priscr) {
   /* ouahful variable */
   bool guhupdown;
 
+  #ifdef DEBUGGING
+	mvaddstr(0, 0, "In init_ncurses");
+  #endif
+
   guhupdown = has_colors();
   if (guhupdown) {
         /* init color subsystem */
@@ -79,6 +83,11 @@ void end_ncurses(WINDOW *priscr) {
    */
 
   endwin();
+
+  #ifdef DEBUGGING
+	printf("\nJust called endwin();\n");
+  #endif
+
   /*
    * maybe set delscreen(screen identifier) later?  not sure if there is
    * a pro or con to this at all, but I want to follow good error
@@ -94,6 +103,12 @@ void end_ncurses(WINDOW *priscr) {
  */
 
 int ypos_for_center(int my, int ln) {
+
+  #ifdef DEBUGGING
+    mvaddstr(0, 0, 
+	strcat("In ypos_for_center(", my, ", ", ln, ");"));
+  #endif
+
   if (ln > my) return -1;
   else if (ln == my) return 0;
   else return (int) ((my - ln) / 2);
@@ -107,6 +122,12 @@ int ypos_for_center(int my, int ln) {
  */
 
 int xpos_for_center(int mx, int col) {
+
+  #ifdef DEBUGGING
+    mvaddstr(0, 1, 
+	strcat("In xpos_for_center(", mx, ", ", col, ");"));
+  #endif
+
   if (col > mx) return -1;
   else if (col == mx) return 0;
   else return (int) ((mx - col) / 2);
@@ -129,6 +150,10 @@ int center_shit(char chunk[] /*, WINDOW *curscr */) {
   getmaxyx(stdscr, maxy, maxx);		/* pointer, anyone? wut? :-?(beep) */
 
   ouah = sizeof(chunk);
+
+  #ifdef DEBUGGING
+    mvaddstr(0, 3, "In center_shit();");
+  #endif
 
   if ((ouah < 1) || (ouah > (maxx * maxy))) {
 	/* out of bounds for what we can put on the screen; we'll learn to 
@@ -168,7 +193,11 @@ int pause_flow(pauseType pT, char *prompt) {
 	 * for status updates, and the like
 	 */
 
-	int maxx, maxy;
+	int maxx, maxy, ouah;
+
+	#ifdef DEBUGGING
+	  mvaddstr(0, 4, "In pause_flow();");
+	#endif
 
 	if (prompt == NULL) {
 		prompt = "";
@@ -181,6 +210,10 @@ int pause_flow(pauseType pT, char *prompt) {
 	}
 
 	getmaxyx(stdscr, maxy, maxx);
+	ouah = xpos_for_center(maxx, (int) strlen(prompt));
+	if (ouah < 0) {
+	  mvaddstr(5, 2, "Problem w/xpos_for_center");
+	}
 
 	mvaddstr((maxy - 2), 
 		 xpos_for_center(maxx, (int) strlen(prompt)),

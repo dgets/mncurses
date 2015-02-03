@@ -13,7 +13,14 @@
  * and quick that'll get the job done.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <ncurses.h>
+
 #include "my-nc_flashcard.h"
+
+#define TEXTLINES	3
+#define MAXLEN		78
 
 WINDOW 	*mainWinder;
 char 	testMsg[3][78] = { "We come for your daughter,", 
